@@ -1,0 +1,69 @@
+{
+	"id": "ae2739ea-a8fd-43f0-877f-ba9e34857937",
+	"values": [
+		{
+			"key": "base_url",
+			"value": "https://укажи_mgmt_IP_ptaf",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "username",
+			"value": "admin",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "password",
+			"value": "вставь сюда пароль",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "fingerprint",
+			"value": "postman",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "target_tenant_id",
+			"value": "00000000-0000-0000-0000-000000000000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "target_rule_id",
+			"value": "вставь 1 ID из списка all_policy_id",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "target_action_id",
+			"value": "вставь 1 ID из списка all_action_id",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "action_log_to_db_id",
+			"value": "заполнится автоматом",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "action_block_id",
+			"value": "заполнится автоматом",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "action_log_to_siem_id",
+			"value": "вставь ID действия отправки в SIEM",
+			"type": "default",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2025-02-11T17:51:57.220Z",
+	"_postman_exported_using": "Postman/11.30.2"
+}

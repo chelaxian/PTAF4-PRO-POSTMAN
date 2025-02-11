@@ -1,0 +1,219 @@
+{
+	"info": {
+		"_postman_id": "a0c66ee3-53bc-491a-92c4-cafb0f7c0f6e",
+		"name": "Fix Bags",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10313775"
+	},
+	"item": [
+		{
+			"name": "Clear CVES (Bug - Exclusion cannot be saved)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Выбираем токен: приоритет у access_token_target_tenant, если его нет — берём access_token\r",
+							"var token = pm.environment.get(\"access_token_target_tenant\") || pm.environment.get(\"access_token\");\r",
+							"\r",
+							"if (!token) {\r",
+							"    console.log(\"⚠️ Ошибка: Нет токена для авторизации!\");\r",
+							"    pm.environment.unset(\"all_policy_id\"); // Чистим переменную, если нет запроса\r",
+							"} else {\r",
+							"    console.log(\"🔐 Используется токен:\", token);\r",
+							"    pm.variables.set(\"token\", token);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Парсим JSON-ответ\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Проверяем, успешно ли обновлено правило\r",
+							"if (pm.response.code === 200) {\r",
+							"    console.log(`✅ Успешно обновлено правило ${pm.globals.get(\"target_rule_id\")} в политике ${pm.globals.get(\"target_policy_id\")}`);\r",
+							"} else {\r",
+							"    console.log(\"⚠️ Ошибка обновления правила:\", pm.response.code);\r",
+							"}\r",
+							"\r",
+							"// Логируем ответ API\r",
+							"console.log(\"ℹ️ Ответ сервера:\", JSON.stringify(jsonData, null, 2));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-length": true,
+					"host": true,
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				},
+				"protocolVersion": "auto",
+				"followRedirects": false,
+				"disableUrlEncoding": true
+			},
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"variables\": {\r\n        \"checks\": [\r\n            \"common\",\r\n            \"sql\",\r\n            \"java\",\r\n            \"php\",\r\n            \"iis\",\r\n            \"apache\",\r\n            \"nginx\",\r\n            \"portal_login\",\r\n            \"version_leakage\",\r\n            \"api_credentials\"\r\n        ]\r\n    }\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/ptaf/v4/config/policies/templates/user/{{target_policy_id}}/rules/{{target_rule_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"ptaf",
+						"v4",
+						"config",
+						"policies",
+						"templates",
+						"user",
+						"{{target_policy_id}}",
+						"rules",
+						"{{target_rule_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add \"Send to SIEM\" action to rule",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"// Выбираем токен: приоритет у access_token_target_tenant, если его нет — берём access_token\r",
+							"var token = pm.environment.get(\"access_token_target_tenant\") || pm.environment.get(\"access_token\");\r",
+							"\r",
+							"if (!token) {\r",
+							"    console.log(\"⚠️ Ошибка: Нет токена для авторизации!\");\r",
+							"    pm.environment.unset(\"all_policy_id\"); // Чистим переменную, если нет запроса\r",
+							"} else {\r",
+							"    console.log(\"🔐 Используется токен:\", token);\r",
+							"    pm.variables.set(\"token\", token);\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Парсим JSON-ответ\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Проверяем успешность выполнения запроса\r",
+							"if (pm.response.code === 200) {\r",
+							"    console.log(`✅ Успешно добавлены действия в правило ${pm.globals.get(\"target_rule_id\")} политики ${pm.globals.get(\"target_policy_id\")}`);\r",
+							"} else {\r",
+							"    console.log(\"⚠️ Ошибка при добавлении действий:\", pm.response.code);\r",
+							"}\r",
+							"\r",
+							"// Логируем ответ API\r",
+							"console.log(\"ℹ️ Ответ сервера:\", JSON.stringify(jsonData, null, 2));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"protocolVersion": "auto",
+				"followRedirects": false,
+				"disableUrlEncoding": true,
+				"disabledSystemHeaders": {
+					"content-length": true,
+					"host": true,
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				}
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"actions\": [\r\n        \"{{action_log_to_db_id}}\",\r\n        \"{{action_block_id}}\",\r\n        \"{{action_log_to_siem_id}}\"\r\n    ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/ptaf/v4/config/policies/templates/user/{{target_policy_id}}/rules/{{target_rule_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"ptaf",
+						"v4",
+						"config",
+						"policies",
+						"templates",
+						"user",
+						"{{target_policy_id}}",
+						"rules",
+						"{{target_rule_id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,189 @@
+{
+	"info": {
+		"_postman_id": "47f4a679-f5fc-4d48-8d11-7e1fe5550642",
+		"name": "Authorization",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "10313775"
+	},
+	"item": [
+		{
+			"name": "Get main token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Парсим JSON-ответ\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Проверяем, есть ли `access_token` в ответе\r",
+							"if (jsonData.access_token) {\r",
+							"    pm.environment.set(\"access_token\", jsonData.access_token);\r",
+							"    console.log(\"✅ Access Token сохранен:\", pm.environment.get(\"access_token\"));\r",
+							"} else {\r",
+							"    console.log(\"⚠️ Access Token НЕ найден в ответе API\");\r",
+							"}\r",
+							"\r",
+							"// Проверяем, есть ли `refresh_token` в ответе\r",
+							"if (jsonData.refresh_token) {\r",
+							"    pm.environment.set(\"refresh_token\", jsonData.refresh_token);\r",
+							"    console.log(\"✅ Refresh Token сохранен:\", pm.environment.get(\"refresh_token\"));\r",
+							"} else {\r",
+							"    console.log(\"⚠️ Refresh Token НЕ найден в ответе API\");\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-length": true,
+					"host": true,
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				},
+				"disableUrlEncoding": true,
+				"followRedirects": false,
+				"protocolVersion": "auto"
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"fingerprint\": \"{{fingerprint}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/ptaf/v4/auth/refresh_tokens",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"ptaf",
+						"v4",
+						"auth",
+						"refresh_tokens"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get tenants access_tokens",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Парсим JSON-ответ\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"// Получаем tenant_id из глобальных переменных (нужно задать вручную в \"Globals\")\r",
+							"let targetTenantId = pm.globals.get(\"target_tenant_id\");\r",
+							"\r",
+							"if (!targetTenantId) {\r",
+							"    console.log(\"⚠️ Ошибка: Глобальная переменная `target_tenant_id` не установлена!\");\r",
+							"} else {\r",
+							"    console.log(\"🎯 Целевой tenant_id:\", targetTenantId);\r",
+							"\r",
+							"    // Проверяем, есть ли `access_token` в ответе\r",
+							"    if (jsonData.access_token) {\r",
+							"        console.log(\"✅ Получен access_token:\", jsonData.access_token);\r",
+							"\r",
+							"        // Сохраняем access_token в переменную окружения\r",
+							"        pm.environment.set(\"access_token_target_tenant\", jsonData.access_token);\r",
+							"        console.log(`✅ access_token_target_tenant сохранен в Environments: ${jsonData.access_token}`);\r",
+							"    } else {\r",
+							"        console.log(\"⚠️ Ошибка: access_token не получен!\");\r",
+							"    }\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-length": true,
+					"host": true,
+					"user-agent": true,
+					"accept": true,
+					"accept-encoding": true,
+					"connection": true
+				},
+				"protocolVersion": "auto",
+				"followRedirects": false,
+				"disableUrlEncoding": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"fingerprint\": \"{{fingerprint}}\",\r\n    \"tenant_id\": \"{{target_tenant_id}}\",\r\n    \"refresh_token\": \"{{refresh_token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/ptaf/v4/auth/access_tokens",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"ptaf",
+						"v4",
+						"auth",
+						"access_tokens"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

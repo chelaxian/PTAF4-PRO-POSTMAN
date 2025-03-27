@@ -12,7 +12,8 @@ ptaf 4 pro postman collection
 В правом верхнем углу выбрать `TOKENS` \
 <img width="256" alt="image" src="https://github.com/user-attachments/assets/ef757ca0-b2dd-4990-8bca-e3bf139d1a7f" /> \
 В настройках каждой коллекции отключить тумблеры всех опций и везде выставить `Auto` \
-<img width="898" alt="image" src="https://github.com/user-attachments/assets/4faf7cfb-d37c-434e-b32d-e72b2c78105e" /> 
+<img width="1280" alt="image" src="https://github.com/user-attachments/assets/97303bf8-7ebb-4bd8-9cc2-67a5b6554a1c" />
+
 
 В разделе `Environments` на вкладке `Globals` заполнить поля: 
 - `{{base_url}}` # схема + IP без косой черты / на конце ( `https://10.10.10.10` )
@@ -25,6 +26,9 @@ ptaf 4 pro postman collection
 - `{{all_policy_id}}` # здесь появится список `ID` всех политик после выполнения запроса
 - `{{all_rules_id}}` # здесь появится список `ID` всех правил после выполнения запроса
 - `{{all_action_id}}` # здесь появится список `ID` всех действий после выполнения запроса
+
+Открыть в левом нижнем углу консоль `Console` для получения информации о результатах выполнения запросов. \
+Выбрать запрос в коллекции и нажать кнопку `Send` (сначала нужно получить токены выполнив запросы в коллекции `Authorization`)
 
 ## Скриншоты результатов выполнения скриптов / запросов
 <img width="1067" alt="image" src="https://github.com/user-attachments/assets/6bf60743-90ef-413f-98a4-de490b2fec71" /> \

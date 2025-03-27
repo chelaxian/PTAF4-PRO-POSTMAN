@@ -3,7 +3,8 @@
 		"_postman_id": "47f4a679-f5fc-4d48-8d11-7e1fe5550642",
 		"name": "Authorization",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10313775"
+		"_exporter_id": "10313775",
+		"_collection_link": "https://chelaxian.postman.co/workspace/PTAF-PRO-4~f9eb960a-13a1-4c18-8628-095375e72da0/collection/10313775-47f4a679-f5fc-4d48-8d11-7e1fe5550642?action=share&source=collection_link&creator=10313775"
 	},
 	"item": [
 		{
@@ -13,23 +14,56 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Парсим JSON-ответ\r",
-							"var jsonData = pm.response.json();\r",
-							"\r",
-							"// Проверяем, есть ли `access_token` в ответе\r",
-							"if (jsonData.access_token) {\r",
-							"    pm.environment.set(\"access_token\", jsonData.access_token);\r",
-							"    console.log(\"✅ Access Token сохранен:\", pm.environment.get(\"access_token\"));\r",
-							"} else {\r",
-							"    console.log(\"⚠️ Access Token НЕ найден в ответе API\");\r",
+							"try {\r",
+							"    // Парсим JSON-ответ\r",
+							"    var jsonData = pm.response.json();\r",
+							"    \r",
+							"    // Проверяем наличие access_token\r",
+							"    if (jsonData.access_token) {\r",
+							"        pm.environment.set(\"access_token\", jsonData.access_token);\r",
+							"        console.log(\"✅ Access Token сохранен:\", pm.environment.get(\"access_token\"));\r",
+							"    } else {\r",
+							"        console.log(\"⚠️ Access Token НЕ найден в ответе API\");\r",
+							"    }\r",
+							"    \r",
+							"    // Проверяем наличие refresh_token\r",
+							"    if (jsonData.refresh_token) {\r",
+							"        pm.environment.set(\"refresh_token\", jsonData.refresh_token);\r",
+							"        console.log(\"✅ Refresh Token сохранен:\", pm.environment.get(\"refresh_token\"));\r",
+							"    } else {\r",
+							"        console.log(\"⚠️ Refresh Token НЕ найден в ответе API\");\r",
+							"    }\r",
+							"} catch (e) {\r",
+							"    console.error(\"Ошибка парсинга JSON:\", e);\r",
+							"    console.log(\"Ответ сервера:\", pm.response.text());\r",
 							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"let rawPassword = pm.globals.get(\"password\");\r",
 							"\r",
-							"// Проверяем, есть ли `refresh_token` в ответе\r",
-							"if (jsonData.refresh_token) {\r",
-							"    pm.environment.set(\"refresh_token\", jsonData.refresh_token);\r",
-							"    console.log(\"✅ Refresh Token сохранен:\", pm.environment.get(\"refresh_token\"));\r",
+							"if (rawPassword !== undefined && rawPassword !== null) {\r",
+							"    // Экранируем по JSON-стандарту\r",
+							"    let jsonSafePassword = rawPassword\r",
+							"        .replace(/\\\\/g, \"\\\\\\\\\")    // backslash\r",
+							"        .replace(/\"/g, '\\\\\"')      // double quote\r",
+							"        .replace(/\\u0008/g, \"\\\\b\") // backspace\r",
+							"        .replace(/\\u000C/g, \"\\\\f\") // formfeed\r",
+							"        .replace(/\\n/g, \"\\\\n\")     // newline\r",
+							"        .replace(/\\r/g, \"\\\\r\")     // carriage return\r",
+							"        .replace(/\\t/g, \"\\\\t\");    // tab\r",
+							"\r",
+							"    pm.globals.set(\"password_json_safe\", jsonSafePassword);\r",
+							"    console.log(\"✅ password_json_safe:\", jsonSafePassword);\r",
 							"} else {\r",
-							"    console.log(\"⚠️ Refresh Token НЕ найден в ответе API\");\r",
+							"    console.warn(\"⚠️ Глобальная переменная 'password' не определена\");\r",
 							"}\r",
 							""
 						],
@@ -45,10 +79,11 @@
 					"user-agent": true,
 					"accept": true,
 					"accept-encoding": true,
-					"connection": true
+					"connection": true,
+					"content-type": true
 				},
-				"disableUrlEncoding": true,
 				"followRedirects": false,
+				"disableUrlEncoding": true,
 				"protocolVersion": "auto"
 			},
 			"request": {
@@ -60,16 +95,15 @@
 					{
 						"key": "Content-Type",
 						"value": "application/json",
-						"type": "text",
-						"disabled": true
+						"type": "text"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"fingerprint\": \"{{fingerprint}}\"\r\n}",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password_json_safe}}\",\r\n    \"fingerprint\": \"{{fingerprint}}\"\r\n}",
 					"options": {
 						"raw": {
-							"language": "json"
+							"language": "text"
 						}
 					}
 				},
@@ -90,33 +124,38 @@
 			"response": []
 		},
 		{
-			"name": "Get tenants access_tokens",
+			"name": "Get tenant access_tokens",
 			"event": [
 				{
 					"listen": "test",
 					"script": {
 						"exec": [
-							"// Парсим JSON-ответ\r",
-							"var jsonData = pm.response.json();\r",
+							"try {\r",
+							"    // Парсим JSON-ответ\r",
+							"    var jsonData = pm.response.json();\r",
 							"\r",
-							"// Получаем tenant_id из глобальных переменных (нужно задать вручную в \"Globals\")\r",
-							"let targetTenantId = pm.globals.get(\"target_tenant_id\");\r",
+							"    // Получаем tenant_id из глобальных переменных (необходимо задать вручную в \"Globals\")\r",
+							"    let targetTenantId = pm.globals.get(\"target_tenant_id\");\r",
 							"\r",
-							"if (!targetTenantId) {\r",
-							"    console.log(\"⚠️ Ошибка: Глобальная переменная `target_tenant_id` не установлена!\");\r",
-							"} else {\r",
-							"    console.log(\"🎯 Целевой tenant_id:\", targetTenantId);\r",
-							"\r",
-							"    // Проверяем, есть ли `access_token` в ответе\r",
-							"    if (jsonData.access_token) {\r",
-							"        console.log(\"✅ Получен access_token:\", jsonData.access_token);\r",
-							"\r",
-							"        // Сохраняем access_token в переменную окружения\r",
-							"        pm.environment.set(\"access_token_target_tenant\", jsonData.access_token);\r",
-							"        console.log(`✅ access_token_target_tenant сохранен в Environments: ${jsonData.access_token}`);\r",
+							"    if (!targetTenantId) {\r",
+							"        console.log(\"⚠️ Ошибка: Глобальная переменная `target_tenant_id` не установлена!\");\r",
 							"    } else {\r",
-							"        console.log(\"⚠️ Ошибка: access_token не получен!\");\r",
+							"        console.log(\"🎯 Целевой tenant_id:\", targetTenantId);\r",
+							"\r",
+							"        // Проверяем, есть ли `access_token` в ответе\r",
+							"        if (jsonData.access_token) {\r",
+							"            console.log(\"✅ Получен access_token:\", jsonData.access_token);\r",
+							"\r",
+							"            // Сохраняем access_token в переменную окружения\r",
+							"            pm.environment.set(\"access_token_target_tenant\", jsonData.access_token);\r",
+							"            console.log(`✅ access_token_target_tenant сохранен в Environments: ${jsonData.access_token}`);\r",
+							"        } else {\r",
+							"            console.log(\"⚠️ Ошибка: access_token не получен!\");\r",
+							"        }\r",
 							"    }\r",
+							"} catch (e) {\r",
+							"    console.error(\"Ошибка парсинга JSON:\", e);\r",
+							"    console.log(\"Ответ сервера:\", pm.response.text());\r",
 							"}\r",
 							""
 						],
@@ -128,6 +167,24 @@
 					"listen": "prerequest",
 					"script": {
 						"exec": [
+							"let rawPassword = pm.globals.get(\"password\");\r",
+							"\r",
+							"if (rawPassword !== undefined && rawPassword !== null) {\r",
+							"    // Экранируем по JSON-стандарту\r",
+							"    let jsonSafePassword = rawPassword\r",
+							"        .replace(/\\\\/g, \"\\\\\\\\\")    // backslash\r",
+							"        .replace(/\"/g, '\\\\\"')      // double quote\r",
+							"        .replace(/\\u0008/g, \"\\\\b\") // backspace\r",
+							"        .replace(/\\u000C/g, \"\\\\f\") // formfeed\r",
+							"        .replace(/\\n/g, \"\\\\n\")     // newline\r",
+							"        .replace(/\\r/g, \"\\\\r\")     // carriage return\r",
+							"        .replace(/\\t/g, \"\\\\t\");    // tab\r",
+							"\r",
+							"    pm.globals.set(\"password_json_safe\", jsonSafePassword);\r",
+							"    console.log(\"✅ password_json_safe:\", jsonSafePassword);\r",
+							"} else {\r",
+							"    console.warn(\"⚠️ Глобальная переменная 'password' не определена\");\r",
+							"}\r",
 							""
 						],
 						"type": "text/javascript",
@@ -142,7 +199,8 @@
 					"user-agent": true,
 					"accept": true,
 					"accept-encoding": true,
-					"connection": true
+					"connection": true,
+					"content-type": true
 				},
 				"protocolVersion": "auto",
 				"followRedirects": false,
@@ -162,7 +220,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"fingerprint\": \"{{fingerprint}}\",\r\n    \"tenant_id\": \"{{target_tenant_id}}\",\r\n    \"refresh_token\": \"{{refresh_token}}\"\r\n}",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password_json_safe}}\",\r\n    \"fingerprint\": \"{{fingerprint}}\",\r\n    \"tenant_id\": \"{{target_tenant_id}}\",\r\n    \"refresh_token\": \"{{refresh_token}}\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

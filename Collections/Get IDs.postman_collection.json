@@ -3,7 +3,8 @@
 		"_postman_id": "a5de330f-30aa-4682-a2ee-bd5d34cb7ab1",
 		"name": "Get IDs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10313775"
+		"_exporter_id": "10313775",
+		"_collection_link": "https://chelaxian.postman.co/workspace/PTAF-PRO-4~f9eb960a-13a1-4c18-8628-095375e72da0/collection/10313775-a5de330f-30aa-4682-a2ee-bd5d34cb7ab1?action=share&source=collection_link&creator=10313775"
 	},
 	"item": [
 		{
@@ -187,108 +188,7 @@
 					]
 				}
 			},
-			"response": [
-				{
-					"name": "Get policies IDs",
-					"originalRequest": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "Bearer {{token}}",
-								"type": "text"
-							},
-							{
-								"key": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{base_url}}/api/ptaf/v4/config/policies/templates/user",
-							"host": [
-								"{{base_url}}"
-							],
-							"path": [
-								"api",
-								"ptaf",
-								"v4",
-								"config",
-								"policies",
-								"templates",
-								"user"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "Server",
-							"value": "nginx"
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 11 Feb 2025 15:41:32 GMT"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Transfer-Encoding",
-							"value": "chunked"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						},
-						{
-							"key": "X-EVENT-ID",
-							"value": "HTTP_GET-5806290c-4fb3-43c3-a0b2-7f70a73911c2"
-						},
-						{
-							"key": "Referrer-Policy",
-							"value": "no-referrer"
-						},
-						{
-							"key": "X-Frame-Options",
-							"value": "DENY"
-						},
-						{
-							"key": "X-Content-Type-Options",
-							"value": "nosniff"
-						},
-						{
-							"key": "X-XSS-Protection",
-							"value": "1; mode=block;"
-						},
-						{
-							"key": "X-Content-Security-Policy",
-							"value": "allow 'self'; frame-ancestors 'none';"
-						},
-						{
-							"key": "Strict-Transport-Security",
-							"value": "max-age=31536000"
-						},
-						{
-							"key": "Content-Security-Policy",
-							"value": "default-src 'self'; script-src 'self' 'unsafe-eval' mc.yandex.ru 'sha256-RUA3pbYGVSz2j++Vye47WZouK5UMg5yKuyszwWnFqSE='; img-src 'self' data: mc.yandex.ru; style-src 'self' 'unsafe-inline'; font-src 'self'; frame-src 'self'; object-src 'none'; connect-src 'self' mc.yandex.ru;"
-						},
-						{
-							"key": "X-WebKit-CSP",
-							"value": "allow 'self';"
-						},
-						{
-							"key": "Content-Encoding",
-							"value": "gzip"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"items\": [\n        {\n            \"templates\": [\n                \"cf0a2d96-1907-4fe4-acd5-041512f0457e\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"20a51c51-3012-4a66-bbbc-5155a232017a\",\n            \"name\": \"PHP (user)\"\n        },\n        {\n            \"templates\": [\n                \"628cf2ca-517d-48fc-9126-88cecdd34847\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"3f607b52-0b60-4349-bc29-239d3bf20b28\",\n            \"name\": \"Bitrix (user)\"\n        },\n        {\n            \"templates\": [\n                \"210063b6-3b6c-4428-8ce8-20bfb6c1981a\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"56b57ded-d2ee-46e2-a343-507f7b929fb0\",\n            \"name\": \"Apache Struts (user)\"\n        },\n        {\n            \"templates\": [\n                \"fa53bb69-3bde-42c4-b95b-0873d64b8b24\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"5ef924d9-2670-4da3-baab-7cd7bae5a16c\",\n            \"name\": \"LAMP (PHP, Apache, MySQL) (user)\"\n        },\n        {\n            \"templates\": [\n                \"6cae6e76-aab0-415a-b068-26af33cb07d2\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"731500a1-727f-4e50-acf4-6228136d31c3\",\n            \"name\": \"ASP.NET (user)\"\n        },\n        {\n            \"templates\": [\n                \"32203cd2-2f97-4bfc-9250-28c509205796\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"7dbabd7c-d91f-4cba-b532-ac6418d2f92f\",\n            \"name\": \"Java (user)\"\n        },\n        {\n            \"templates\": [\n                \"2ac98589-85ed-4e81-94ea-d6cc05396683\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"bdc5110f-decf-45ba-80dc-c299be530f5d\",\n            \"name\": \"Joomla CMS (user)\"\n        },\n        {\n            \"templates\": [\n                \"5f5f3e10-02f2-40d7-a699-7bb697b02e93\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"d2eac5cf-8d2b-4ab2-8b9e-632f7d345c97\",\n            \"name\": \"Node.js (user)\"\n        },\n        {\n            \"templates\": [\n                \"352a4409-30a2-4281-bc84-5bb5d65f95ba\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"d4eba1db-1dac-42c3-87d4-fcbb4ee0f106\",\n            \"name\": \"Default Template (user)\"\n        },\n        {\n            \"templates\": [\n                \"20a3b1c2-7025-4e75-9ae1-6a48da8a78a7\"\n            ],\n            \"type\": \"USER_POLICY\",\n            \"id\": \"d51aeb96-35df-42bd-8ddd-2ab8b1d4ae03\",\n            \"name\": \"Microsoft Exchange (user)\"\n        }\n    ]\n}"
-				}
-			]
+			"response": []
 		},
 		{
 			"name": "Get rules IDs",

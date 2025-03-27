@@ -14,6 +14,8 @@ ptaf 4 pro postman collection
 В настройках каждой коллекции отключить тумблеры всех опций и везде выставить `Auto` \
 <img width="1280" alt="image" src="https://github.com/user-attachments/assets/97303bf8-7ebb-4bd8-9cc2-67a5b6554a1c" />
 
+---
+
 ## Авторизация и запуск
 
 В разделе `Environments` на вкладке `Globals` заполнить поля: 

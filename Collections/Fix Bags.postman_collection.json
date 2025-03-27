@@ -3,7 +3,8 @@
 		"_postman_id": "a0c66ee3-53bc-491a-92c4-cafb0f7c0f6e",
 		"name": "Fix Bags",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10313775"
+		"_exporter_id": "10313775",
+		"_collection_link": "https://chelaxian.postman.co/workspace/PTAF-PRO-4~f9eb960a-13a1-4c18-8628-095375e72da0/collection/10313775-a0c66ee3-53bc-491a-92c4-cafb0f7c0f6e?action=share&source=collection_link&creator=10313775"
 	},
 	"item": [
 		{
@@ -59,7 +60,8 @@
 					"user-agent": true,
 					"accept": true,
 					"accept-encoding": true,
-					"connection": true
+					"connection": true,
+					"content-type": true
 				},
 				"protocolVersion": "auto",
 				"followRedirects": false,
@@ -165,7 +167,8 @@
 					"user-agent": true,
 					"accept": true,
 					"accept-encoding": true,
-					"connection": true
+					"connection": true,
+					"content-type": true
 				}
 			},
 			"request": {

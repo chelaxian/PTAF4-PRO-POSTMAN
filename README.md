@@ -25,8 +25,8 @@ BASE_URL="https://msproject.site.net/console"
 Отключить там же все Заголовки `Headers` вставляемые Postman по умолчанию \
 <img width="606" alt="image" src="https://github.com/user-attachments/assets/7fe5a58b-f2f9-4456-86d8-11731c2cbbe8" /> 
 
-Импортировать все коллекции в раздел `Collections` \
-Импортировать все переменные в раздел `Environments` \
+Импортировать [все коллекции](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/tree/main/Collections) в раздел `Collections` \
+Импортировать [все переменные](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/tree/main/Environments) в раздел `Environments` \
 В правом верхнем углу выбрать `TOKENS` \
 <img width="256" alt="image" src="https://github.com/user-attachments/assets/ef757ca0-b2dd-4990-8bca-e3bf139d1a7f" /> \
 В настройках каждой коллекции отключить тумблеры всех опций и везде выставить `Auto` \

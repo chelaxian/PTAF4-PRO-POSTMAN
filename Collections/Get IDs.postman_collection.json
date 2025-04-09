@@ -3,8 +3,8 @@
 		"_postman_id": "a5de330f-30aa-4682-a2ee-bd5d34cb7ab1",
 		"name": "Get IDs",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "10313775",
-		"_collection_link": "https://chelaxian.postman.co/workspace/PTAF-PRO-4~f9eb960a-13a1-4c18-8628-095375e72da0/collection/10313775-a5de330f-30aa-4682-a2ee-bd5d34cb7ab1?action=share&source=collection_link&creator=10313775"
+		"description": "Коллекция API-запросов для PTAF PRO 3",
+		"version": "2.0"
 	},
 	"item": [
 		{

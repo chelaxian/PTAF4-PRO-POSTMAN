@@ -9,7 +9,7 @@ Postman коллекция для проверки модулей защиты P
 # Конфигурация - укажите здесь целевой сайт
 BASE_URL="https://msproject.site.net/console"
 ```
-вместо `https://msproject.site.net/console` укажите реальный желаемое DNS-имя, находящееся за PTAF
+вместо `https://msproject.site.net/console` укажите реальное DNS-имя веб-прилоежния, находящегося за PTAF, для его проверки тестовыми атаками 
 
 ## Запуск скриптов
 

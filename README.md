@@ -4,7 +4,7 @@ Postman коллекция для проверки модулей защиты P
 Приветствуются предложения по улучшению/расширению коллекции через `pull request` или в `issues`.
 
 ## Предварительная настройка [скриптов с тестовыми атаками](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/tree/main/Test_attacks)
-Перед выполнением тестовых атак, откройте в текстовом редакторе скрипты (или коллекцию в Postman) и замените в них значение строки `BASE_URL` в начале файла
+Перед выполнением тестовых атак, откройте в текстовом редакторе скрипты (или [коллекцию](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/blob/main/Test_attacks/waf_attacks_postman_collection.json) в Postman) и замените в них значение строки `BASE_URL` в начале файла
 ```
 # Конфигурация - укажите здесь целевой сайт
 BASE_URL="https://msproject.site.net/console"

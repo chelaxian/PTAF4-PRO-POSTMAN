@@ -3,6 +3,14 @@ Postman коллекция для проверки модулей защиты P
 
 Приветствуются предложения по улучшению/расширению коллекции через `pull request` или в `issues`.
 
+## Предварительная настройка [скриптов с тестовыми атаками](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/tree/main/Test_attacks)
+Перед выполнением тестовых атак, откройте в текстовом редакторе скрипты (или коллекцию в Postman) и замените в них значение строки `BASE_URL` в начале файла
+```
+# Конфигурация - укажите здесь целевой сайт
+BASE_URL="https://msproject.site.net/console"
+```
+вместо `https://msproject.site.net/console` укажите реальный желаемое DNS-имя, находящееся за PTAF
+
 ## Предварительная настройка POSTMAN
 На вкладке `Settings` в разделе `General` отключить все что связано с проверкой `SSL` и везде выставить режим `Auto` \
 <img width="617" alt="image" src="https://github.com/user-attachments/assets/fef1e7ef-a15a-4fd5-a064-9188474d2826" /> \
@@ -47,14 +55,6 @@ Postman коллекция для проверки модулей защиты P
 <img width="1070" alt="image" src="https://github.com/user-attachments/assets/3f4adc3e-038a-4632-befd-74e5ed926361" /> \
 <img width="1040" alt="image" src="https://github.com/user-attachments/assets/b26dd51d-528f-470d-ab82-75bea765799a" /> \
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/51230909-fe8c-4f9d-9da6-9ea55eeb2d92" />
-
-## Предварительная настройка POSTMAN
-Перед выполнением тестовых атак, откройте в текстовом редакторе скрипты (или коллекцию в Postman) и замените в них значение строки `BASE_URL` в начале файла
-```
-# Конфигурация - укажите здесь целевой сайт
-BASE_URL="https://msproject.site.net/console"
-```
-вместо `https://msproject.site.net/console` укажите реальный желаемое DNS-имя, находящееся за PTAF
 
 ## Скриншоты результатов выполнения скриптов 
 <img width="531" alt="image" src="https://github.com/user-attachments/assets/12fec465-bf42-45e1-843e-db5dd6abac5c" /> \

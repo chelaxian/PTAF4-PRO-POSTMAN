@@ -11,6 +11,14 @@ BASE_URL="https://msproject.site.net/console"
 ```
 вместо `https://msproject.site.net/console` укажите реальный желаемое DNS-имя, находящееся за PTAF
 
+## Запуск скриптов
+
+- [`waf_attacks_curl_linux.sh`](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/blob/main/Test_attacks/waf_attacks_curl_linux.sh) - запускается в bash терминале linux
+- [`waf_attacks_curl_windows.bat`](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/blob/main/Test_attacks/waf_attacks_curl_windows.bat) - запускается в CMD консоли windows
+- [`waf_attacks_powershell.ps1`](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/blob/main/Test_attacks/waf_attacks_powershell.ps1) - запускается в Powershell уонсоли windows
+
+- [`waf_attacks_postman_collection.json`](https://github.com/chelaxian/PTAF4-PRO-POSTMAN/blob/main/Test_attacks/waf_attacks_postman_collection.json) - запускается в Postman (инструкции по настройке ниже)
+
 ## Предварительная настройка POSTMAN
 На вкладке `Settings` в разделе `General` отключить все что связано с проверкой `SSL` и везде выставить режим `Auto` \
 <img width="617" alt="image" src="https://github.com/user-attachments/assets/fef1e7ef-a15a-4fd5-a064-9188474d2826" /> \

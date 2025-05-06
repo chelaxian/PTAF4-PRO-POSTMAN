@@ -44,8 +44,7 @@ BASE_URL="https://msproject.site.net/console"
   
 Остальные разделы либо заполнятся автоматически, либо нужно будет заполнять по мере необходимости.
 
-![Uploading image.png…]()
-
+<img width="1175" alt="image" src="https://github.com/user-attachments/assets/ec04c67a-7fcb-44a2-ab04-fd8ef167b791" />
 
 Раздел `TOKENS` заполнять не нужно, но из него для некоторых POST-запросов нужно будет выбирать необходимые `ID` из полей: 
 - `{{tenant-X_id}}` # здесь появится список `ID` всех тенантов после выполнения запросов коллекции `Get IDs` - `Get tenant IDs`
@@ -61,7 +60,7 @@ BASE_URL="https://msproject.site.net/console"
 ---
 
 ## Скриншоты результатов выполнения запросов
-<img width="1067" alt="image" src="https://github.com/user-attachments/assets/6bf60743-90ef-413f-98a4-de490b2fec71" /> \
+![Без имени](https://github.com/user-attachments/assets/5bfcb74c-1cf7-4e5a-aa4b-92fc7d72ecfd) \
 <img width="1070" alt="image" src="https://github.com/user-attachments/assets/3f4adc3e-038a-4632-befd-74e5ed926361" /> \
 <img width="1040" alt="image" src="https://github.com/user-attachments/assets/b26dd51d-528f-470d-ab82-75bea765799a" /> \
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/51230909-fe8c-4f9d-9da6-9ea55eeb2d92" />

@@ -60,12 +60,8 @@
 					"user-agent": true,
 					"accept": true,
 					"accept-encoding": true,
-					"connection": true,
-					"content-type": true
-				},
-				"protocolVersion": "auto",
-				"followRedirects": false,
-				"disableUrlEncoding": true
+					"connection": true
+				}
 			},
 			"request": {
 				"method": "PATCH",
@@ -158,17 +154,13 @@
 				}
 			],
 			"protocolProfileBehavior": {
-				"protocolVersion": "auto",
-				"followRedirects": false,
-				"disableUrlEncoding": true,
 				"disabledSystemHeaders": {
 					"content-length": true,
 					"host": true,
 					"user-agent": true,
 					"accept": true,
 					"accept-encoding": true,
-					"connection": true,
-					"content-type": true
+					"connection": true
 				}
 			},
 			"request": {
@@ -217,7 +209,134 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Reset General Pod to defaults (4ram/1cpu/2pods)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"traffic_processing\":{\"pod_size\":\"base\",\"min_pods_per_node\":2,\"max_pods_per_node\":15,\"min_pods\":1,\"max_pods\":30},\"administrator\":{\"password\":\"{{password}}\"}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/ptaf/v4/auth/tenants/00000000-0000-0000-0000-000000000000",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"ptaf",
+						"v4",
+						"auth",
+						"tenants",
+						"00000000-0000-0000-0000-000000000000"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Reset Custom Pod to defaults (4ram/1cpu/2pods)",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"{{tenant_name}}\",\"description\":\"{{tenant_description}}\",\"is_active\":true,\"traffic_processing\":{\"pod_size\":\"base\",\"min_pods_per_node\":2,\"max_pods_per_node\":15,\"min_pods\":1,\"max_pods\":30},\"administrator\":{\"email\":\"{{tenant_email}}\",\"description\":\"{{tenant_admin}}\",\"password\":\"{{tenant_password}}\",\"is_active\":true,\"password_change_required\":false}}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/api/ptaf/v4/auth/tenants/{{target_tenant_id}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"ptaf",
+						"v4",
+						"auth",
+						"tenants",
+						"{{target_tenant_id}}"
+					]
+				}
+			},
+			"response": []
 		}
 	]
 }
-

@@ -1,9 +1,9 @@
 {
-	"id": "ae2739ea-a8fd-43f0-877f-ba9e34857937",
+	"id": "1df43ba6-3155-49b5-8e96-9dfb0de5d901",
 	"values": [
 		{
 			"key": "base_url",
-			"value": "https://10.0.0.1",
+			"value": "https://вставь-MGMT-IP-PTAF",
 			"type": "default",
 			"enabled": true
 		},
@@ -15,13 +15,7 @@
 		},
 		{
 			"key": "password",
-			"value": "введи пароль от web-интерфейса",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "password_json_safe",
-			"value": "заполнится автоматом",
+			"value": "вставь пароль админа веб-интерфейса",
 			"type": "default",
 			"enabled": true
 		},
@@ -72,10 +66,40 @@
 			"value": "вставь ID действия отправки в SIEM",
 			"type": "default",
 			"enabled": true
+		},
+		{
+			"key": "tenant_name",
+			"value": "вставь имя тенанта",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tenant_email",
+			"value": "вставь mail тенанта",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tenant_admin",
+			"value": "вставь admin тенанта",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tenant_password",
+			"value": "вставь password тенанта",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "tenant_description",
+			"value": "вставь description тенанта",
+			"type": "default",
+			"enabled": true
 		}
 	],
 	"name": "Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2025-03-27T11:45:09.536Z",
-	"_postman_exported_using": "Postman/11.38.4"
+	"_postman_exported_at": "2025-05-06T18:41:13.258Z",
+	"_postman_exported_using": "Postman/11.44.2"
 }

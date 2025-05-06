@@ -61,7 +61,7 @@ BASE_URL="https://msproject.site.net/console"
 
 ## Скриншоты результатов выполнения запросов
 ![Без имени](https://github.com/user-attachments/assets/5bfcb74c-1cf7-4e5a-aa4b-92fc7d72ecfd) \
-<img width="1070" alt="image" src="https://github.com/user-attachments/assets/3f4adc3e-038a-4632-befd-74e5ed926361" /> \
+![image](https://github.com/user-attachments/assets/d30f47e8-4acc-494d-bd7b-6b6f44ff36cc) \
 <img width="1040" alt="image" src="https://github.com/user-attachments/assets/b26dd51d-528f-470d-ab82-75bea765799a" /> \
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/51230909-fe8c-4f9d-9da6-9ea55eeb2d92" />
 

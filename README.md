@@ -30,7 +30,8 @@ BASE_URL="https://msproject.site.net/console"
 В правом верхнем углу выбрать `TOKENS` \
 <img width="256" alt="image" src="https://github.com/user-attachments/assets/ef757ca0-b2dd-4990-8bca-e3bf139d1a7f" /> \
 В настройках каждой коллекции отключить тумблеры всех опций и везде выставить `Auto` \
-<img width="1280" alt="image" src="https://github.com/user-attachments/assets/97303bf8-7ebb-4bd8-9cc2-67a5b6554a1c" />
+![image](https://github.com/user-attachments/assets/4d6f822a-8f17-47ec-9ba5-126e24ce00f7)
+
 
 ---
 
@@ -43,7 +44,8 @@ BASE_URL="https://msproject.site.net/console"
   
 Остальные разделы либо заполнятся автоматически, либо нужно будет заполнять по мере необходимости.
 
-<img width="1162" alt="image" src="https://github.com/user-attachments/assets/23eaffb2-d8a0-4b62-a0b9-1577dfff71c3" />
+![Uploading image.png…]()
+
 
 Раздел `TOKENS` заполнять не нужно, но из него для некоторых POST-запросов нужно будет выбирать необходимые `ID` из полей: 
 - `{{tenant-X_id}}` # здесь появится список `ID` всех тенантов после выполнения запросов коллекции `Get IDs` - `Get tenant IDs`
